@@ -1,5 +1,7 @@
 import random
 import matplotlib.pyplot as plt
+import networkx as nx
+
 # Definir el grafo con los caminos
 grafo = {
     '1': ['2', '4'],
@@ -45,6 +47,19 @@ grafo = {
     '41': ['40', '42'],
     '42': ['41', '38']
 }
+
+# Crear un objeto de grafo dirigido
+G = nx.Graph(grafo)
+
+# Dibujar el grafo
+pos = nx.spring_layout(G)  # Colocar los nodos utilizando un algoritmo de disposición
+nx.draw(G, pos, with_labels=True, font_weight='bold', node_size=700, node_color='skyblue', font_size=8)
+
+# Dibujar arcos
+nx.draw_networkx_edges(G, pos, edgelist=grafo.edges(), width=1.0, alpha=0.5, edge_color='gray')
+
+# Mostrar el grafo
+plt.show()
 
 # Definir el nodo donde se encuentra la llave
 nodos_llave = ['19', '38', '41']

@@ -19,27 +19,54 @@ def colocar_v(matriz, fila, columna):
     return False
 
 def es_solucion_valida(matriz):
-    """Verifica si una solución es válida según las condiciones."""
+    """Verifica si una solución es válida según las condiciones dadas."""
     m, n = len(matriz), len(matriz[0])
     
-    for i in range(m):
+    # Verificar el primer criterio: Todas las filas y columnas deben estar interrumpidas por al menos una pieza de dominó
+    def verificar_interrupcion():
+        # Verificar cada fila
+        for i in range(m):
+            hay_dominó_en_fila = False
+            for j in range(n):
+                if matriz[i][j] in ['H', 'V']:
+                    hay_dominó_en_fila = True
+                    break
+            if not hay_dominó_en_fila:
+                return False
+        
+        # Verificar cada columna
         for j in range(n):
-            if matriz[i][j] == 'H':
-                # Verifica si la 'H' intersecta con una 'V'
-                if (j > 0 and matriz[i][j - 1] == 'V') or (j + 1 < n and matriz[i][j + 1] == 'V'):
-                    return True
-                # Verifica si la 'H' intersecta con una 'H' en la fila inferior
-                if i + 1 < m and matriz[i + 1][j] == 'V':
-                    return True
-            elif matriz[i][j] == 'V':
-                # Verifica si la 'V' intersecta con una 'H'
-                if (i > 0 and matriz[i - 1][j] == 'H') or (i + 1 < m and matriz[i + 1][j] == 'H'):
-                    return True
-                # Verifica si la 'V' intersecta con una 'V' en la fila inferior
-                if j + 1 < n and matriz[i][j + 1] == 'H':
-                    return True
+            hay_dominó_en_columna = False
+            for i in range(m):
+                if matriz[i][j] in ['H', 'V']:
+                    hay_dominó_en_columna = True
+                    break
+            if not hay_dominó_en_columna:
+                return False
+        
+        return True
     
-    return False
+    # Verificar el segundo criterio: Las piezas de dominó deben cortar las líneas de separación
+    def verificar_corte():
+        # Verificar cada fila
+        for i in range(m):
+            for j in range(n - 1):
+                # Verificar que la pieza de dominó "H" corta una línea vertical
+                if matriz[i][j] == 'H' and matriz[i][j + 1] == 'H':
+                    return True
+        
+        # Verificar cada columna
+        for j in range(n):
+            for i in range(m - 1):
+                # Verificar que la pieza de dominó "V" corta una línea horizontal
+                if matriz[i][j] == 'V' and matriz[i + 1][j] == 'V':
+                    return True
+        
+        return False
+    
+    # Verificar ambos criterios
+    return verificar_interrupcion() and verificar_corte()
+
 
 def backtracking(m, n, fila, columna, matriz, soluciones):
     """Realiza el backtracking para encontrar soluciones válidas."""

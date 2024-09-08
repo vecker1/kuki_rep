@@ -24,4 +24,4 @@ Cada carpeta está organizada por semestre, y dentro de cada una podrás encontr
 Algunos de los proyectos fueron desarrollados trabajando con clientes y están documentados en su totalidad, siguiendo buenas prácticas de desarrollo.
 
 
-¡Gracias por visitar el repositorio!
+¡Gracias por visitar mi repositorio academico!
